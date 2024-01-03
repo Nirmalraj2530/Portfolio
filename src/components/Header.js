@@ -45,15 +45,7 @@ const Header = () => {
   //   elemToggleFunc(document.body);
   // };
 
-  // const toggleTheme = () => {
-  //   if (theme === 'dark_theme') {
-  //     setTheme('light_theme');
-  //     localStorage.setItem('theme', 'light_theme');
-  //   } else {
-  //     setTheme('dark_theme');
-  //     localStorage.setItem('theme', 'dark_theme');
-  //   }
-  // };
+
 
   useEffect(() => {
     const navToggleBtn = document.querySelector("[data-nav-toggle-btn]");
