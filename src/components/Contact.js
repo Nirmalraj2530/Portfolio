@@ -22,12 +22,51 @@ const Contact = () => {
   const [message, setMessage] = useState("");
   // console.log(">>>>>>>", name, email, phone, message );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Log or handle the form data as needed
-    console.log({ name, email, phone, message });
-  };
 
+    try {
+      const response = await fetch('http://localhost:3001/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, phone, message }),
+      });
+
+      if (response.ok) {
+        alert('Form submitted successfully!');
+      } else {
+        alert('Failed to submit form. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  
+
+    // try {
+    //   const response = await fetch('https://sheet.best/api/sheets/91d9d75a-a4e5-46cb-9d8b-6d333147c4df', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(formData),
+    //   });
+
+    //   if (response.ok) {
+    //     console.log('Form data successfully submitted');
+    //     alert('Form data submitted successfully!');
+    //     // You can add any further logic or state updates here
+    //   } else {
+    //     console.error('Failed to submit form data');
+    //     alert('Error submitting form data. Please try again.');
+    //   }
+    // } catch (error) {
+    //   console.error('Error submitting form data:', error);
+    //   alert('An error occurred. Please try again.');
+    // }
+  };
   // const [formData, setFormData] = useState({
   //   name: '',
   //   email: '',
@@ -121,19 +160,19 @@ const Contact = () => {
 
             <li>
               <ul className="contac-social-list gap-5 mt-5">
-                <li>
-                  <a href="#" className="contact-social-link">
-                    <div className="tooltip">LinkedIn</div>
-                    <FaLinkedin />
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="contact-social-link">
-                    <div className="tooltip">GitHub</div>
+              <li>
+              <a href=" http://www.linkedin.com/in/nirmalraj-s-554489184" className="contact-social-link">
+                <div className="tooltip">LinkedIn</div>
+                <FaLinkedin />
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Nirmalraj2530?tab=repositories" className="contact-social-link">
+                <div className="tooltip">GitHub</div>
 
-                    <FaGithub />
-                  </a>
-                </li>
+                <FaGithub />
+              </a>
+            </li>
                 <li>
                   <a href="#" className="contact-social-link">
                     <div className="tooltip">Facebook</div>

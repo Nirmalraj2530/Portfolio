@@ -37,7 +37,7 @@ const Stats = () => {
               <img src={stats3} alt="Peoples rating icon" />
             </div>
             <h2 className="h2 card-title">
-              5+ <strong>Happy Clients</strong>
+              6+ <strong>Happy Clients</strong>
             </h2>
         <FaArrowRight color='gray'/>
           </a>
