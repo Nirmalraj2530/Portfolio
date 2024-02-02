@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Styles.css";
-// import { FaUserCircle } from "react-icons/fa";
-// import { FaEnvelope } from "react-icons/fa";
-// import { FaPhone } from "react-icons/fa";
-// import { FaComment } from "react-icons/fa";
+
 import {
   FaUserCircle,
   FaEnvelope,
@@ -14,88 +11,48 @@ import {
   FaGithub,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import emailjs from "emailjs-com";
 
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-  // console.log(">>>>>>>", name, email, phone, message );
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, phone, message }),
-      });
+      const templateParams = {
+        user_name: name,
+        user_email: email,
+        user_phone: phone,
+        user_message: message,
+      };
 
-      if (response.ok) {
-        alert('Form submitted successfully!');
-      } else {
-        alert('Failed to submit form. Please try again.');
-      }
+      // Use your own SERVICE_ID, TEMPLATE_ID, and USER_ID from EmailJS
+      await emailjs.send(
+        "service_ta5qvuw",
+        "template_vjia2om",
+        templateParams,
+        "R-GLIk7hTpNZg4el6"
+      );
+
+      alert("Form submitted successfully!");
+      // Reset the form after successful submission
+      setName("");
+      setEmail("");
+      setPhone("");
+      setMessage("");
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('An error occurred. Please try again later.');
+      console.error("Error submitting form:", error);
+      alert("Failed to submit form. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  
-
-    // try {
-    //   const response = await fetch('https://sheet.best/api/sheets/91d9d75a-a4e5-46cb-9d8b-6d333147c4df', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-
-    //   if (response.ok) {
-    //     console.log('Form data successfully submitted');
-    //     alert('Form data submitted successfully!');
-    //     // You can add any further logic or state updates here
-    //   } else {
-    //     console.error('Failed to submit form data');
-    //     alert('Error submitting form data. Please try again.');
-    //   }
-    // } catch (error) {
-    //   console.error('Error submitting form data:', error);
-    //   alert('An error occurred. Please try again.');
-    // }
   };
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   email: '',
-  //   phone: '',
-  //   message: '',
-  // });
-
-  // Function to handle input changes
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const { name, email, phone, message } = formData;
-
-  //   // Example: Log each form field separately
-  //   console.log('Name:', name);
-  //   console.log('Email:', email);
-  //   console.log('Phone:', phone);
-  //   console.log('Message:', message);
-
-  //   // Add your logic for form submission here, using form field values as needed
-  // };
-
   return (
     <div className="container">
       <section className="contact row  col-lg-12 px-2 " id="contact">
@@ -160,19 +117,27 @@ const Contact = () => {
 
             <li>
               <ul className="contac-social-list gap-5 mt-5">
-              <li>
-              <a href=" http://www.linkedin.com/in/nirmalraj-s-554489184" className="contact-social-link">
-                <div className="tooltip">LinkedIn</div>
-                <FaLinkedin />
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/Nirmalraj2530?tab=repositories" className="contact-social-link">
-                <div className="tooltip">GitHub</div>
+                <li>
+                  <a
+                    href=" http://www.linkedin.com/in/nirmalraj-s-554489184"
+                    className="contact-social-link"
+                    target="_blank" rel="noopener noreferrer"
+                  >
+                    <div className="tooltip">LinkedIn</div>
+                    <FaLinkedin />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/Nirmalraj2530?tab=repositories"
+                    className="contact-social-link"
+                    target="_blank" rel="noopener noreferrer"
+                  >
+                    <div className="tooltip">GitHub</div>
 
-                <FaGithub />
-              </a>
-            </li>
+                    <FaGithub />
+                  </a>
+                </li>
                 <li>
                   <a href="#" className="contact-social-link">
                     <div className="tooltip">Facebook</div>
@@ -180,15 +145,14 @@ const Contact = () => {
                     <FaFacebook />
                   </a>
                 </li>
-                </ul>
-                {/* <li>
+              </ul>
+              {/* <li>
                   <a href="#" className="contact-social-link">
                     <div className="tooltip"></div>
 
                     <FaFacebook />
                   </a>
                 </li> */}
-            
             </li>
           </ul>
         </div>
@@ -244,14 +208,13 @@ const Contact = () => {
               <input
                 type="number"
                 name="phone"
-               
                 id="phone"
                 required
                 placeholder="Phone Number"
                 className="input-field"
                 value={phone}
                 onChange={(e) => {
-                  const inputText = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                  const inputText = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
                   setPhone(inputText.slice(0, 10)); // Restrict to 10 digits
                 }}
                 maxLength={10}
@@ -278,8 +241,12 @@ const Contact = () => {
             </div>
           </div>
 
-          <button type="submit" className="btnfirst btn1-primary">
-            Send
+          <button
+            type="submit"
+            className="btnfirst btn1-primary"
+            disabled={loading}
+          >
+            {loading ? "Sending..." : "Send"}
           </button>
         </form>
       </section>
@@ -288,3 +255,181 @@ const Contact = () => {
 };
 
 export default Contact;
+
+// import React, { useState } from "react";
+// import {
+//   FaUserCircle,
+//   FaEnvelope,
+//   FaPhone,
+//   FaComment,
+//   FaFacebook,
+//   FaLinkedin,
+//   FaGithub,
+// } from "react-icons/fa";
+// import { Link } from "react-router-dom";
+
+// const Contact = () => {
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [phone, setPhone] = useState("");
+//   const [message, setMessage] = useState("");
+
+//   // const handleSubmit = (e) => {
+//   //   e.preventDefault();
+
+//   //   // Construct the WhatsApp message link
+//   //   const whatsappMessage = `Hello, my name is ${name}. My email is ${email}. My phone number is ${phone}. Message: ${message}`;
+//   //   const whatsappLink = `https://wa.me/+918428449794?text=${encodeURIComponent(
+//   //     whatsappMessage
+//   //   )}`;
+
+//   //   // Open WhatsApp link in a new tab
+//   //   window.open(whatsappLink, "_blank");
+//   // };
+//   const handleSubmit = () => {
+//     const whatsappMessage = `Hello, my name is ${name}. My email is ${email}. My phone number is ${phone}. Message: ${message}`;
+//     const whatsappLink = `https://wa.me/+918428016510?text=${encodeURIComponent(
+//       whatsappMessage
+//     )}`;
+
+//     // Open WhatsApp link
+//     window.location.href = whatsappLink;
+//   };
+
+//   return (
+//     <div className="container">
+//       <section className="contact row col-lg-12 px-2" id="contact">
+//         <div className="contact-content section-content col-lg-6 col-md-6 col-sm-6">
+//           <p className="section-subtitle">Contact</p>
+//           <h2 className="h3 section-title">
+//             Have You Any Project? Please Drop a Message
+//           </h2>
+//           <p className="section-text">
+//             Get in touch and let me know how I can help. Fill out the form, and
+//             I’ll be in touch as soon as possible.
+//           </p>
+
+//           {/* ... (your existing contact information) */}
+
+//           <ul className="contac-social-list gap-5 mt-5">
+//             <li>
+//               <a
+//                 href="http://www.linkedin.com/in/nirmalraj-s-554489184"
+//                 className="contact-social-link"
+//               >
+//                 <div className="tooltip">LinkedIn</div>
+//                 <FaLinkedin />
+//               </a>
+//             </li>
+//             <li>
+//               <a
+//                 href="https://github.com/Nirmalraj2530?tab=repositories"
+//                 className="contact-social-link"
+//               >
+//                 <div className="tooltip">GitHub</div>
+//                 <FaGithub />
+//               </a>
+//             </li>
+//             <li>
+//               <a href="#" className="contact-social-link">
+//                 <div className="tooltip">Facebook</div>
+//                 <FaFacebook />
+//               </a>
+//             </li>
+//           </ul>
+//         </div>
+
+//         <form
+//           onSubmit={handleSubmit}
+//           className="contact-form col-lg-6 col-md-6 col-sm-6"
+//         >
+//           <div className="form-wrapper">
+//             <label htmlFor="name" className="form-label">
+//               Name
+//             </label>
+//             <div className="input-wrapper">
+//               <FaUserCircle className="Iconposition" size={20} />
+//               <input
+//                 type="text"
+//                 name="name"
+//                 id="name"
+//                 required
+//                 placeholder="Name"
+//                 className="input-field"
+//                 value={name}
+//                 onChange={(e) => setName(e.target.value)}
+//               />
+//             </div>
+//           </div>
+
+//           <div className="form-wrapper">
+//             <label htmlFor="email" className="form-label">
+//               Email
+//             </label>
+//             <div className="input-wrapper">
+//               <FaEnvelope className="Iconposition" size={20} />
+//               <input
+//                 type="email"
+//                 name="email"
+//                 id="email"
+//                 required
+//                 placeholder="Email"
+//                 className="input-field"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//               />
+//             </div>
+//           </div>
+
+//           <div className="form-wrapper">
+//             <label htmlFor="phone" className="form-label">
+//               Phone
+//             </label>
+//             <div className="input-wrapper">
+//               <FaPhone className="Iconposition" size={20} />
+//               <input
+//                 type="tel"
+//                 name="phone"
+//                 id="phone"
+//                 required
+//                 placeholder="Phone Number"
+//                 className="input-field"
+//                 value={phone}
+//                 onChange={(e) => {
+//                   const inputText = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+//                   setPhone(inputText.slice(0, 10)); // Restrict to 10 digits
+//                 }}
+//                 maxLength={10}
+//                 pattern="\d*" // Allow only numeric input
+//               />
+//             </div>
+//           </div>
+
+//           <div className="form-wrapper">
+//             <label htmlFor="message" className="form-label">
+//               Message
+//             </label>
+//             <div className="input-wrapper">
+//               <FaComment className="Iconposition" size={20} />
+//               <textarea
+//                 name="message"
+//                 id="message"
+//                 required
+//                 placeholder="Write message..."
+//                 className="input-field"
+//                 value={message}
+//                 onChange={(e) => setMessage(e.target.value)}
+//               ></textarea>
+//             </div>
+//           </div>
+
+//           <button type="submit" className="btnfirst btn1-primary">
+//             Send WhatsApp Message
+//           </button>
+//         </form>
+//       </section>
+//     </div>
+//   );
+// };
+
+// export default Contact;

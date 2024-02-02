@@ -58,13 +58,17 @@ const Home = () => {
           </a>
           <ul className="contac-social-list mt-5 d-flex justify-content-center align-items-center gap-5">
             <li>
-              <a href=" http://www.linkedin.com/in/nirmalraj-s-554489184" className="contact-social-link">
+              <a href=" http://www.linkedin.com/in/nirmalraj-s-554489184" className="contact-social-link"
+              target="_blank" rel="noopener noreferrer"
+              >
                 <div className="tooltip">LinkedIn</div>
                 <FaLinkedin />
               </a>
             </li>
             <li>
-              <a href="https://github.com/Nirmalraj2530?tab=repositories" className="contact-social-link">
+              <a href="https://github.com/Nirmalraj2530?tab=repositories" className="contact-social-link"
+              target="_blank" rel="noopener noreferrer"
+              >
                 <div className="tooltip">GitHub</div>
 
                 <FaGithub />

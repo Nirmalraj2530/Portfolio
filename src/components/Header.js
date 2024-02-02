@@ -6,14 +6,20 @@ const Header = () => {
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") || "light_theme"
   );
+  const [isNavbarActive, setIsNavbarActive] = useState(false);
 
   const toggleTheme = () => {
     const newTheme = theme === "light_theme" ? "dark_theme" : "light_theme";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
+
   const toggleActive = () => {
     setIsActive(!isActive);
+  };
+
+  const toggleNavbar = () => {
+    setIsNavbarActive(!isNavbarActive);
   };
 
   useEffect(() => {
@@ -32,21 +38,6 @@ const Header = () => {
     };
   }, []);
 
-  const elemToggleFunc = (elem) => {
-    elem.classList.toggle("active");
-  };
-
-  // const toggleNavbar = () => {
-  //   toggleActive();
-  //   const navToggleBtn = document.querySelector("[data-nav-toggle-btn]");
-  //   const navbar = document.querySelector("[data-navbar]");
-  //   elemToggleFunc(navToggleBtn);
-  //   elemToggleFunc(navbar);
-  //   elemToggleFunc(document.body);
-  // };
-
-
-
   useEffect(() => {
     const navToggleBtn = document.querySelector("[data-nav-toggle-btn]");
     navToggleBtn.addEventListener("click", toggleNavbar);
@@ -54,7 +45,7 @@ const Header = () => {
     return () => {
       navToggleBtn.removeEventListener("click", toggleNavbar);
     };
-  }, []); // Run this effect only once
+  }, []);
 
   useEffect(() => {
     if (theme === "light_theme") {
@@ -65,13 +56,6 @@ const Header = () => {
       document.body.classList.add("light_theme");
     }
   }, [theme]);
-
-
-  const [isNavbarActive, setIsNavbarActive] = useState(false);
-
-  const toggleNavbar = () => {
-    setIsNavbarActive(!isNavbarActive);
-  };
 
   return (
     <header className={`header ${isActive ? "active" : ""}`} data-header>
@@ -101,18 +85,18 @@ const Header = () => {
           </button>
         </div>
         <button
-        className={`nav-toggle-btnfirst ${isNavbarActive ? 'active' : ''}`}
-        aria-label="Toggle Menu"
-        title="Toggle Menu"
-        data-nav-toggle-btn
-        onClick={toggleNavbar}
-      >
-        <span className="one"></span>
-        <span className="two"></span>
-        <span className="three"></span>
-      </button>
+          className={`nav-toggle-btnfirst ${isNavbarActive ? "active" : ""}`}
+          aria-label="Toggle Menu"
+          title="Toggle Menu"
+          data-nav-toggle-btn
+          onClick={toggleNavbar}
+        >
+          <span className="one"></span>
+          <span className="two"></span>
+          <span className="three"></span>
+        </button>
 
-      <nav className={`navbar ${isNavbarActive ? 'active' : ''}`} data-navbar>
+        <nav className={`navbar ${isNavbarActive ? "active" : ""}`} data-navbar>
           <ul className="navbar-list">
             <li>
               <a href="#home" className="navbar-link">
